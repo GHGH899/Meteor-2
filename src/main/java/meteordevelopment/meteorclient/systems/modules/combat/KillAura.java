@@ -6,6 +6,7 @@
 package meteordevelopment.meteorclient.systems.modules.combat;
 
 import baritone.api.BaritoneAPI;
+import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
@@ -37,6 +38,7 @@ import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
+import net.minecraft.network.packet.s2c.play.DeathMessageS2CPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -101,6 +103,20 @@ public class KillAura extends Module {
         .description("Will try and use an axe to break target shields.")
         .defaultValue(ShieldMode.Break)
         .visible(() -> autoSwitch.get() && weapon.get() != Weapon.Axe)
+        .build()
+    );
+
+    private final Setting<Boolean> toggleOnDeath = sgGeneral.add(new BoolSetting.Builder()
+        .name("toggle-on-death")
+        .description("Disables kill-aura when you die.")
+        .defaultValue(false)
+        .build()
+    );
+
+    private final Setting<Boolean> toggleOnLog = sgGeneral.add(new BoolSetting.Builder()
+        .name("toggle-on-log")
+        .description("Disables kill-aura when you disconnect from a server.")
+        .defaultValue(false)
         .build()
     );
 
@@ -310,6 +326,24 @@ public class KillAura extends Module {
     private void onSendPacket(PacketEvent.Send event) {
         if (event.packet instanceof UpdateSelectedSlotC2SPacket) {
             switchTimer = switchDelay.get();
+        }
+    }
+
+    @EventHandler
+    private void onGameLeft(GameLeftEvent event) {
+        if (!toggleOnLog.get()) return;
+
+        toggle();
+    }
+
+    @EventHandler
+    private void onPacketReceive(PacketEvent.Receive event)  {
+        if (event.packet instanceof DeathMessageS2CPacket packet) {
+            Entity entity = mc.world.getEntityById(packet.getEntityId());
+            if (entity == mc.player && toggleOnDeath.get()) {
+                toggle();
+                info("Toggled off because you died.");
+            }
         }
     }
 
