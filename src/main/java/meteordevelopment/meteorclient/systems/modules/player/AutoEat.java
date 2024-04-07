@@ -17,6 +17,8 @@ import meteordevelopment.meteorclient.systems.modules.combat.BedAura;
 import meteordevelopment.meteorclient.systems.modules.combat.CrystalAura;
 import meteordevelopment.meteorclient.systems.modules.combat.KillAura;
 import meteordevelopment.meteorclient.systems.modules.world.Nuker;
+import meteordevelopment.meteorclient.systems.modules.world.InfinityMiner;
+import meteordevelopment.meteorclient.systems.modules.player.AutoFish;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.player.SlotUtils;
@@ -30,7 +32,7 @@ import java.util.List;
 import java.util.function.BiPredicate;
 
 public class AutoEat extends Module {
-    private static final Class<? extends Module>[] MODULELIST = new Class[] { KillAura.class, CrystalAura.class, AnchorAura.class, BedAura.class, Nuker.class };
+    private static final Class<? extends Module>[] MODULELIST = new Class[] { KillAura.class, CrystalAura.class, AnchorAura.class, BedAura.class, Nuker.class, InfinityMiner.class, AutoFish.class };
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final SettingGroup sgThreshold = settings.createGroup("Threshold");
@@ -57,7 +59,7 @@ public class AutoEat extends Module {
 
     private final Setting<Boolean> pauseModules = sgGeneral.add(new BoolSetting.Builder()
         .name("pause-modules")
-        .description("Pauses all auras and nuker when eating.")
+        .description("Pauses all Auras, Nuker, InfinityMiner and AutoFish when eating.")
         .defaultValue(true)
         .build()
     );
@@ -166,7 +168,7 @@ public class AutoEat extends Module {
         prevSlot = mc.player.getInventory().selectedSlot;
         eat();
 
-        // Pause auras and nuker
+        // Pause Auras, Nuker, InfinityMiner and AutoFish
         wasAura.clear();
         if (pauseModules.get()) {
             for (Class<? extends Module> klass : MODULELIST) {
@@ -200,7 +202,7 @@ public class AutoEat extends Module {
 
         eating = false;
 
-        // Resume auras and nuker
+        // Resume Auras, Nuker, InfinityMiner and AutoFish
         if (pauseModules.get()) {
             for (Class<? extends Module> klass : MODULELIST) {
                 Module module = Modules.get().get(klass);
