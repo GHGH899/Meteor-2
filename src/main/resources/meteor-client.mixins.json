@@ -163,6 +163,7 @@
     "StatusEffectInstanceAccessor",
     "StatusEffectInstanceMixin",
     "StringHelperMixin",
+    "StringReaderMixin",
     "SweetBerryBushBlockMixin",
     "TextHandlerAccessor",
     "TextMixin",
