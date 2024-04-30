@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "meteordevelopment.meteorclient.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "plugin": "meteordevelopment.meteorclient.MixinPlugin",
   "client": [
     "AbstractBlockAccessor",
@@ -69,7 +69,6 @@
     "CreativeInventoryScreenAccessor",
     "CreativeSlotMixin",
     "CrossbowItemAccessor",
-    "CustomPayloadS2CPacketMixin",
     "DefaultSkinHelperMixin",
     "DisconnectedScreenMixin",
     "DrawContextMixin",
@@ -79,6 +78,7 @@
     "EntityAccessor",
     "EntityAttributeInstanceMixin",
     "EntityBucketItemAccessor",
+    "EntityEffectParticleEffectAccessor",
     "EntityMixin",
     "EntityRenderDispatcherMixin",
     "EntityRendererMixin",
@@ -160,6 +160,7 @@
     "SlotMixin",
     "SoundSystemMixin",
     "SplashTextResourceSupplierMixin",
+    "StatusEffectAccessor",
     "StatusEffectInstanceAccessor",
     "StatusEffectInstanceMixin",
     "StringHelperMixin",
